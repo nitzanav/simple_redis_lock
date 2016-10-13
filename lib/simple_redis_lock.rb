@@ -44,7 +44,7 @@ module SimpleRedisLock
     #
     def lock(key, expiration)
       timeout = (expiration * 1000).to_i
-      if @redis.set(key, Time.now.strftime('%Y-%m-%d %H:%M:%S.%L %z'), nx: true, px: timeout)
+      if @redis.set("SimpleRedisLock:#{key}", Time.now.strftime('%Y-%m-%d %H:%M:%S.%L %z'), nx: true, px: timeout)
         if block_given?
           begin
             yield
@@ -58,12 +58,12 @@ module SimpleRedisLock
     end
 
     def release(key)
-      @redis.del key
+      @redis.del "SimpleRedisLock:#{key}"
     end
 
     # time
     def acquired_at(key)
-      time_string = @redis.get(key)
+      time_string = @redis.get("SimpleRedisLock:#{key}")
       return nil unless time_string
 
       Time.strptime(time_string, '%Y-%m-%d %H:%M:%S.%L %z')
@@ -71,7 +71,7 @@ module SimpleRedisLock
 
     # remaining time till lock expiration
     def ttl(key)
-      pttl = @redis.pttl(key)
+      pttl = @redis.pttl("SimpleRedisLock:#{key}")
       return nil if pttl == -2
 
       pttl.to_f / 1000

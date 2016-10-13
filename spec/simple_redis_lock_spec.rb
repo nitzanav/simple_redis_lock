@@ -72,7 +72,7 @@ describe SimpleRedisLock do
     end
     sleep THREAD_SYNC_DELAY
     expect(subject.ttl(key)).to be_within(THREAD_SYNC_DELAY * 2).of(EX)
-    sleep THREAD_SYNC_DELAY
+    sleep THREAD_SYNC_DELAY * 2
     expect(subject.ttl(key)).to be_nil
   end
 
