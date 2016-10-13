@@ -63,4 +63,14 @@ Or install it yourself as:
 
     $ gem install simple_redis_lock
 
+## Alternatives:
+
+I explored some other awesome alternatives before creating this gem:
+
+1. [mlanett/redis-lock](https://github.com/mlanett/redis-lock)
+2. [PatrickTulskie/redis-lock](https://github.com/PatrickTulskie/redis-lock)
+3. [leandromoreira/redlock-rb](https://github.com/leandromoreira/redlock-rb)
+4. [dv/redis-semaphore](https://github.com/dv/redis-semaphore)
+
+but they had too many features of blocking to acquire lock and didn't use this single ```SET KEY 1 NX EX 3600``` awesome atomic redis statement.
 
